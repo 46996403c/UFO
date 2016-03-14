@@ -10,6 +10,7 @@ var mainState = (function (_super) {
     function mainState() {
         _super.apply(this, arguments);
         this.UFO_SIZE = 75;
+        this.UFO_SPEED = 300;
     }
     mainState.prototype.preload = function () {
         _super.prototype.preload.call(this);
@@ -29,10 +30,25 @@ var mainState = (function (_super) {
         this.ufo.width = this.ufo.height = this.UFO_SIZE;
         this.ufo.anchor.setTo(0.5, 0.5);
         this.physics.enable(this.ufo);
+        this.cursor = this.input.keyboard.createCursorKeys();
     };
     mainState.prototype.update = function () {
         _super.prototype.update.call(this);
         this.game.debug.bodyInfo(this.ufo, 0, 0);
+        this.ufo.body.velocity.x = 0;
+        this.ufo.body.velocity.y = 0;
+        if (this.cursor.left.isDown) {
+            this.ufo.body.velocity.x = -this.UFO_SPEED;
+        }
+        else if (this.cursor.right.isDown) {
+            this.ufo.body.velocity.x = this.UFO_SPEED;
+        }
+        if (this.cursor.up.isDown) {
+            this.ufo.body.velocity.y = -this.UFO_SPEED;
+        }
+        else if (this.cursor.down.isDown) {
+            this.ufo.body.velocity.y = this.UFO_SPEED;
+        }
     };
     return mainState;
 })(Phaser.State);
