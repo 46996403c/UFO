@@ -10,6 +10,8 @@ class mainState extends Phaser.State {
     private MAX_SPEED = 300; // pixels/second
     private ACCELERATION = 800; // pixels/second/second
     private DRAG = 200; // pixels/second
+    private acceleracionAngular = 50;
+    private maxAcceleracionAngular = 100;
 
     preload():void {
         super.preload();
@@ -40,11 +42,16 @@ class mainState extends Phaser.State {
         this.ufo.body.collideWorldBounds = true;
         this.ufo.body.bounce.set(0.8); //Valor entre 0.0 y 1.0
         this.ufo.body.drag.setTo(this.DRAG, this.DRAG); //x,y
+        this.ufo.body.angularDrag = this.maxAcceleracionAngular;
     }
 
     update():void {
         super.update();
         this.game.debug.bodyInfo(this.ufo, 0, 0);
+        this.moverUFO();
+    }
+
+    private moverUFO() {
         //Quitamos la velocidad por acceleracion, de forma que el movimiento sea mas natural
         // el - del -this es por los valores de x, y, -x, -y
         //this.ufo.body.velocity.x = 0;
@@ -53,15 +60,19 @@ class mainState extends Phaser.State {
         if (this.cursor.left.isDown) {
             //this.ufo.body.velocity.x = -this.UFO_SPEED;
             this.ufo.body.acceleration.x = -this.ACCELERATION;
+            this.ufo.body.angularAcceleration = -this.acceleracionAngular;
         } else if (this.cursor.right.isDown) {
             //this.ufo.body.velocity.x = this.UFO_SPEED;
             this.ufo.body.acceleration.x = this.ACCELERATION;
+            this.ufo.body.angularAcceleration = this.acceleracionAngular;
         } else if (this.cursor.up.isDown) {
             //this.ufo.body.velocity.y = -this.UFO_SPEED;
             this.ufo.body.acceleration.y = -this.ACCELERATION;
+            this.ufo.body.angularAcceleration = -this.acceleracionAngular;
         } else if (this.cursor.down.isDown) {
             //this.ufo.body.velocity.y = this.UFO_SPEED;
             this.ufo.body.acceleration.y = this.ACCELERATION;
+            this.ufo.body.angularAcceleration = this.acceleracionAngular;
         }
         else {
             //this.ufo.body.velocity.x = 0;
@@ -69,7 +80,9 @@ class mainState extends Phaser.State {
             this.ufo.body.acceleration.x = 0;
             this.ufo.body.acceleration.y = 0;
         }
-    }
+        //this.ufo.body.angularAcceleration = this.ufo.body.acceleration.x;
+        //this.ufo.body.angularAcceleration = this.ufo.body.acceleration.y;
+    };
 }
 
 class SimpleGame {

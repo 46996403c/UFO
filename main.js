@@ -14,6 +14,8 @@ var mainState = (function (_super) {
         this.MAX_SPEED = 300; // pixels/second
         this.ACCELERATION = 800; // pixels/second/second
         this.DRAG = 200; // pixels/second
+        this.acceleracionAngular = 50;
+        this.maxAcceleracionAngular = 100;
     }
     mainState.prototype.preload = function () {
         _super.prototype.preload.call(this);
@@ -38,10 +40,14 @@ var mainState = (function (_super) {
         this.ufo.body.collideWorldBounds = true;
         this.ufo.body.bounce.set(0.8); //Valor entre 0.0 y 1.0
         this.ufo.body.drag.setTo(this.DRAG, this.DRAG); //x,y
+        this.ufo.body.angularDrag = this.maxAcceleracionAngular;
     };
     mainState.prototype.update = function () {
         _super.prototype.update.call(this);
         this.game.debug.bodyInfo(this.ufo, 0, 0);
+        this.moverUFO();
+    };
+    mainState.prototype.moverUFO = function () {
         //Quitamos la velocidad por acceleracion, de forma que el movimiento sea mas natural
         // el - del -this es por los valores de x, y, -x, -y
         //this.ufo.body.velocity.x = 0;
@@ -49,18 +55,22 @@ var mainState = (function (_super) {
         if (this.cursor.left.isDown) {
             //this.ufo.body.velocity.x = -this.UFO_SPEED;
             this.ufo.body.acceleration.x = -this.ACCELERATION;
+            this.ufo.body.angularAcceleration = -this.acceleracionAngular;
         }
         else if (this.cursor.right.isDown) {
             //this.ufo.body.velocity.x = this.UFO_SPEED;
             this.ufo.body.acceleration.x = this.ACCELERATION;
+            this.ufo.body.angularAcceleration = this.acceleracionAngular;
         }
         else if (this.cursor.up.isDown) {
             //this.ufo.body.velocity.y = -this.UFO_SPEED;
             this.ufo.body.acceleration.y = -this.ACCELERATION;
+            this.ufo.body.angularAcceleration = -this.acceleracionAngular;
         }
         else if (this.cursor.down.isDown) {
             //this.ufo.body.velocity.y = this.UFO_SPEED;
             this.ufo.body.acceleration.y = this.ACCELERATION;
+            this.ufo.body.angularAcceleration = this.acceleracionAngular;
         }
         else {
             //this.ufo.body.velocity.x = 0;
@@ -68,7 +78,10 @@ var mainState = (function (_super) {
             this.ufo.body.acceleration.x = 0;
             this.ufo.body.acceleration.y = 0;
         }
+        //this.ufo.body.angularAcceleration = this.ufo.body.acceleration.x;
+        //this.ufo.body.angularAcceleration = this.ufo.body.acceleration.y;
     };
+    ;
     return mainState;
 })(Phaser.State);
 var SimpleGame = (function () {
