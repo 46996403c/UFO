@@ -4,6 +4,7 @@ var __extends = (this && this.__extends) || function (d, b) {
     function __() { this.constructor = d; }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
+var Physics = Phaser.Physics;
 var mainState = (function (_super) {
     __extends(mainState, _super);
     function mainState() {
@@ -15,6 +16,7 @@ var mainState = (function (_super) {
         this.load.image('ufo', 'assets/UFO.png');
         this.load.image('pickup', 'assets/Pickup.png');
         this.load.image('background', 'assets/Background.png');
+        this.physics.startSystem(Physics.ARCADE);
     };
     mainState.prototype.create = function () {
         _super.prototype.create.call(this);
@@ -26,9 +28,11 @@ var mainState = (function (_super) {
         //this.ufo.scale.setTo(scale - 0.05, scale - 0.05);
         this.ufo.width = this.ufo.height = this.UFO_SIZE;
         this.ufo.anchor.setTo(0.5, 0.5);
+        this.physics.enable(this.ufo);
     };
     mainState.prototype.update = function () {
         _super.prototype.update.call(this);
+        this.game.debug.bodyInfo(this.ufo, 0, 0);
     };
     return mainState;
 })(Phaser.State);

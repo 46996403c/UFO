@@ -1,5 +1,6 @@
 /// <reference path="phaser/phaser.d.ts"/>
 
+import Physics = Phaser.Physics;
 class mainState extends Phaser.State {
     //game: Phaser.Game;
     private ufo:Phaser.Sprite;
@@ -12,6 +13,8 @@ class mainState extends Phaser.State {
         this.load.image('ufo', 'assets/UFO.png');
         this.load.image('pickup', 'assets/Pickup.png');
         this.load.image('background', 'assets/Background.png');
+
+        this.physics.startSystem(Physics.ARCADE);
     }
 
     create():void {
