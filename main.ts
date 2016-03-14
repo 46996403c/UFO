@@ -33,9 +33,11 @@ class mainState extends Phaser.State {
         this.ufo.width = this.ufo.height = this.UFO_SIZE;
         this.ufo.anchor.setTo(0.5, 0.5);
 
-        this.physics.enable(this.ufo);
+        this.physics.enable(this.ufo, Physics.ARCADE);
         this.ufo.body.maxVelocity.setTo(this.MAX_SPEED, this.MAX_SPEED); //coordenadas X, Y
-        this.cursor = this.input.keyboard.createCursorKeys();
+        this.cursor = this.input.keyboard.createCursorKeys()
+        this.ufo.body.collideWorldBounds = true;
+        this.ufo.body.bounce.set(0.7);
     }
 
     update():void {

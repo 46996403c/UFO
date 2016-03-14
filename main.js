@@ -31,9 +31,11 @@ var mainState = (function (_super) {
         //this.ufo.scale.setTo(scale - 0.05, scale - 0.05);
         this.ufo.width = this.ufo.height = this.UFO_SIZE;
         this.ufo.anchor.setTo(0.5, 0.5);
-        this.physics.enable(this.ufo);
+        this.physics.enable(this.ufo, Physics.ARCADE);
         this.ufo.body.maxVelocity.setTo(this.MAX_SPEED, this.MAX_SPEED); //coordenadas X, Y
         this.cursor = this.input.keyboard.createCursorKeys();
+        this.ufo.body.collideWorldBounds = true;
+        this.ufo.body.bounce.set(0.7);
     };
     mainState.prototype.update = function () {
         _super.prototype.update.call(this);
