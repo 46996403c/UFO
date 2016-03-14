@@ -11,8 +11,8 @@ var mainState = (function (_super) {
         _super.apply(this, arguments);
         this.UFO_SIZE = 75;
         //private UFO_SPEED = 200;
-        this.MAX_SPEED = 250; // pixels/second
-        this.ACCELERATION = 750; // pixels/second/second
+        this.MAX_SPEED = 300; // pixels/second
+        this.ACCELERATION = 800; // pixels/second/second
     }
     mainState.prototype.preload = function () {
         _super.prototype.preload.call(this);
@@ -35,12 +35,13 @@ var mainState = (function (_super) {
         this.ufo.body.maxVelocity.setTo(this.MAX_SPEED, this.MAX_SPEED); //coordenadas X, Y
         this.cursor = this.input.keyboard.createCursorKeys();
         this.ufo.body.collideWorldBounds = true;
-        this.ufo.body.bounce.set(0.7);
+        this.ufo.body.bounce.set(0.8); //Valor entre 0.0 y 1.0
     };
     mainState.prototype.update = function () {
         _super.prototype.update.call(this);
         this.game.debug.bodyInfo(this.ufo, 0, 0);
         //Quitamos la velocidad por acceleracion, de forma que el movimiento sea mas natural
+        // el - del -this es por los valores de x, y, -x, -y
         //this.ufo.body.velocity.x = 0;
         //this.ufo.body.velocity.y = 0;
         if (this.cursor.left.isDown) {
