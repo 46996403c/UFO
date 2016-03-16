@@ -60,15 +60,14 @@ class mainState extends Phaser.State {
     };
 
     private createPickupObjects():void{
-        this.pickup = this.add.sprite(this.world.centerX, this.world.centerY, 'pickup');
-        this.pickup.anchor.setTo(0.5, 0.5);
+        this.pickup = new Pickup(this.game, this.world.centerX, this.world.centerY, 'pickup');
+        this.add.existing(this.pickup);
     }
 
     update():void {
         super.update();
         this.game.debug.bodyInfo(this.ufo, 0, 0);
         this.moverUFO();
-        this.pickup.angle += 1;
         this.physics.arcade.collide(this.ufo, this.walls);
     }
 
@@ -95,11 +94,21 @@ class mainState extends Phaser.State {
     };
 }
 
+class Pickup extends Phaser.Sprite{
+    constructor(game:Phaser.Game, x:number, y:number, key:string|Phaser.RenderTexture|Phaser.BitmapData|PIXI.Texture){
+        super(game, x, y, key);
+        this.anchor.setTo(0.5, 0.5);
+    }
+    update():void{
+        super.update();
+        this.angle += 1;
+    }
+}
+
 class SimpleGame {
     game:Phaser.Game;
     constructor() {
         this.game = new Phaser.Game(600, 600, Phaser.AUTO, 'gameDiv');
-        Phaser.Plugin.VirtualJoystick
         this.game.state.add('main', mainState);
         this.game.state.start('main');
     }
