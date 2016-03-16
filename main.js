@@ -5,6 +5,7 @@ var __extends = (this && this.__extends) || function (d, b) {
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
 var Physics = Phaser.Physics;
+var Point = Phaser.Point;
 var mainState = (function (_super) {
     __extends(mainState, _super);
     function mainState() {
@@ -43,6 +44,8 @@ var mainState = (function (_super) {
         var wall_up = this.add.sprite(0, 0, 'up', null, this.walls);
         var wall_left = this.add.sprite(0, wall_up.height, 'left', null, this.walls);
         var center = this.add.sprite(wall_left.width, wall_up.height, 'center', null);
+        this.center_aux = this.add.sprite(wall_left.width, wall_up.height, 'center', null);
+        this.center_aux.inputEnabled = true;
         var wall_right = this.add.sprite(wall_left.width + center.width, wall_up.height, 'right', null, this.walls);
         var wall_down = this.add.sprite(0, wall_up.height + center.height, 'down', null, this.walls);
         this.walls.setAll('body.immovable', true);
@@ -63,10 +66,22 @@ var mainState = (function (_super) {
     mainState.prototype.createPickupObjects = function () {
         this.pickup = new Pickup(this.game, this.world.centerX, this.world.centerY, 'pickup');
         this.add.existing(this.pickup);
+        var positions = [
+            new Point(300, 125), new Point(300, 475),
+            new Point(125, 300), new Point(475, 300),
+            new Point(175, 175), new Point(425, 175),
+            new Point(175, 425), new Point(425, 425),
+        ];
+        for (var i = 0; i < positions.length; i++) {
+            var position = positions[i];
+            this.pickup = new Pickup(this.game, position.x, position.y, 'pickup');
+            this.add.existing(this.pickup);
+        }
     };
     mainState.prototype.update = function () {
         _super.prototype.update.call(this);
-        this.game.debug.bodyInfo(this.ufo, 0, 0);
+        //this.game.debug.bodyInfo(this.ufo, 0, 0);
+        this.game.debug.spriteInputInfo(this.center_aux, 32, 32);
         this.moverUFO();
         this.physics.arcade.collide(this.ufo, this.walls);
     };

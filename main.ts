@@ -1,6 +1,8 @@
 /// <reference path="phaser/phaser.d.ts"/>
 
 import Physics = Phaser.Physics;
+import Point = Phaser.Point;
+
 class mainState extends Phaser.State {
     private ufo:Phaser.Sprite;
     private cursor:Phaser.CursorKeys;
@@ -14,6 +16,7 @@ class mainState extends Phaser.State {
     private BOUNCE:number = 0.4;
     private ANGULAR_DRAG:number = this.DRAG * 1.3;
     private pickup:Phaser.Sprite;
+    private center_aux;
 
     preload():void {
         super.preload();
@@ -42,6 +45,8 @@ class mainState extends Phaser.State {
         var wall_up = this.add.sprite(0, 0, 'up', null, this.walls);
         var wall_left = this.add.sprite(0, wall_up.height, 'left', null, this.walls);
         var center = this.add.sprite(wall_left.width, wall_up.height, 'center', null);
+        this.center_aux = this.add.sprite(wall_left.width, wall_up.height, 'center', null);
+        this.center_aux.inputEnabled = true;
         var wall_right = this.add.sprite(wall_left.width + center.width, wall_up.height, 'right', null, this.walls);
         var wall_down = this.add.sprite(0, wall_up.height + center.height, 'down', null, this.walls);
         this.walls.setAll('body.immovable', true);
@@ -62,11 +67,23 @@ class mainState extends Phaser.State {
     private createPickupObjects():void{
         this.pickup = new Pickup(this.game, this.world.centerX, this.world.centerY, 'pickup');
         this.add.existing(this.pickup);
+        var positions:Point[]=[
+            new Point(300, 125), new Point(300, 475),
+            new Point(125, 300), new Point(475, 300),
+            new Point(175, 175), new Point(425, 175),
+            new Point(175, 425), new Point(425, 425),
+        ];
+        for (var i=0;i<positions.length;i++){
+            var position = positions[i];
+            this.pickup = new Pickup(this.game, position.x, position.y, 'pickup');
+            this.add.existing(this.pickup);
+        }
     }
 
     update():void {
         super.update();
-        this.game.debug.bodyInfo(this.ufo, 0, 0);
+        //this.game.debug.bodyInfo(this.ufo, 0, 0);
+        this.game.debug.spriteInputInfo(this.center_aux, 32, 32);
         this.moverUFO();
         this.physics.arcade.collide(this.ufo, this.walls);
     }
