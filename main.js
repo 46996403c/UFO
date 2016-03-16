@@ -10,7 +10,6 @@ var mainState = (function (_super) {
     function mainState() {
         _super.apply(this, arguments);
         this.UFO_SIZE = 75;
-        //private UFO_SPEED = 200;
         this.MAX_SPEED = 300; // pixels/second
         this.ACCELERATION = 800; // pixels/second/second
         this.DRAG = 200; // pixels/second
@@ -40,20 +39,14 @@ var mainState = (function (_super) {
         this.walls.enableBody = true;
         var wall_up = this.add.sprite(0, 0, 'up', null, this.walls);
         var wall_left = this.add.sprite(0, wall_up.height, 'left', null, this.walls);
-        /*
-         background = this.add.sprite(0, 0, 'background');
-         var scale = this.world.height / background.height;
-         background.scale.setTo(scale, scale);
-         */
         var center = this.add.sprite(wall_left.width, wall_up.height, 'center', null);
         var wall_right = this.add.sprite(wall_left.width + center.width, wall_up.height, 'right', null, this.walls);
         var wall_down = this.add.sprite(0, wall_up.height + center.height, 'down', null, this.walls);
+        this.walls.setAll('body.immovable', true);
     };
     ;
     mainState.prototype.createPlayer = function () {
         this.ufo = this.add.sprite(this.world.centerX, this.world.centerY, 'ufo');
-        //this.ufo.scale.setTo(scale - 0.05, scale - 0.05);
-        //this.ufo.width = this.ufo.height = this.UFO_SIZE;
         this.ufo.anchor.setTo(0.5, 0.5);
         this.physics.enable(this.ufo, Physics.ARCADE);
         this.ufo.body.maxVelocity.setTo(this.MAX_SPEED, this.MAX_SPEED); //coordenadas X, Y
@@ -72,36 +65,26 @@ var mainState = (function (_super) {
     mainState.prototype.moverUFO = function () {
         //Quitamos la velocidad por acceleracion, de forma que el movimiento sea mas natural
         // el - del -this es por los valores de x, y, -x, -y
-        //this.ufo.body.velocity.x = 0;
-        //this.ufo.body.velocity.y = 0;
         if (this.cursor.left.isDown) {
-            //this.ufo.body.velocity.x = -this.UFO_SPEED;
             this.ufo.body.acceleration.x = -this.ACCELERATION;
             this.ufo.body.angularAcceleration = -this.acceleracionAngular;
         }
         else if (this.cursor.right.isDown) {
-            //this.ufo.body.velocity.x = this.UFO_SPEED;
             this.ufo.body.acceleration.x = this.ACCELERATION;
             this.ufo.body.angularAcceleration = this.acceleracionAngular;
         }
         else if (this.cursor.up.isDown) {
-            //this.ufo.body.velocity.y = -this.UFO_SPEED;
             this.ufo.body.acceleration.y = -this.ACCELERATION;
             this.ufo.body.angularAcceleration = -this.acceleracionAngular;
         }
         else if (this.cursor.down.isDown) {
-            //this.ufo.body.velocity.y = this.UFO_SPEED;
             this.ufo.body.acceleration.y = this.ACCELERATION;
             this.ufo.body.angularAcceleration = this.acceleracionAngular;
         }
         else {
-            //this.ufo.body.velocity.x = 0;
-            //this.ufo.body.velocity.y = 0;
             this.ufo.body.acceleration.x = 0;
             this.ufo.body.acceleration.y = 0;
         }
-        //this.ufo.body.angularAcceleration = this.ufo.body.acceleration.x;
-        //this.ufo.body.angularAcceleration = this.ufo.body.acceleration.y;
     };
     ;
     return mainState;
