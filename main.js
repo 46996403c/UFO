@@ -15,11 +15,13 @@ var mainState = (function (_super) {
         this.DRAG = 200; // pixels/second
         this.acceleracionAngular = 50;
         this.maxAcceleracionAngular = 100;
+        this.BOUNCE = 0.4;
+        this.ANGULAR_DRAG = this.DRAG * 1.3;
     }
     mainState.prototype.preload = function () {
         _super.prototype.preload.call(this);
         this.load.image('ufo', 'assets/UFO_small.png');
-        this.load.image('pickup', 'assets/Pickup.png');
+        this.load.image('pickup', 'assets/Pickup_small.png');
         this.load.image('background', 'assets/Background.png');
         this.load.image('center', 'assets/center.png');
         this.load.image('up', 'assets/up.png');
@@ -32,6 +34,7 @@ var mainState = (function (_super) {
         _super.prototype.create.call(this);
         this.createWalls();
         this.createPlayer();
+        this.createPickupObjects();
         this.cursor = this.input.keyboard.createCursorKeys();
     };
     mainState.prototype.createWalls = function () {
@@ -51,15 +54,21 @@ var mainState = (function (_super) {
         this.physics.enable(this.ufo, Physics.ARCADE);
         this.ufo.body.maxVelocity.setTo(this.MAX_SPEED, this.MAX_SPEED); //coordenadas X, Y
         this.ufo.body.collideWorldBounds = true;
-        this.ufo.body.bounce.set(0.8); //Valor entre 0.0 y 1.0
+        this.ufo.body.bounce.set(this.BOUNCE); //Valor entre 0.0 y 1.0
         this.ufo.body.drag.setTo(this.DRAG, this.DRAG); //x,y
-        this.ufo.body.angularDrag = this.maxAcceleracionAngular;
+        //this.ufo.body.angularDrag = this.maxAcceleracionAngular;
+        this.ufo.body.angularDrag = this.ANGULAR_DRAG;
     };
     ;
+    mainState.prototype.createPickupObjects = function () {
+        this.pickup = this.add.sprite(this.world.centerX, this.world.centerY, 'pickup');
+        this.pickup.anchor.setTo(0.5, 0.5);
+    };
     mainState.prototype.update = function () {
         _super.prototype.update.call(this);
         this.game.debug.bodyInfo(this.ufo, 0, 0);
         this.moverUFO();
+        this.pickup.angle += 1;
         this.physics.arcade.collide(this.ufo, this.walls);
     };
     mainState.prototype.moverUFO = function () {
@@ -92,6 +101,7 @@ var mainState = (function (_super) {
 var SimpleGame = (function () {
     function SimpleGame() {
         this.game = new Phaser.Game(600, 600, Phaser.AUTO, 'gameDiv');
+        Phaser.Plugin.VirtualJoystick;
         this.game.state.add('main', mainState);
         this.game.state.start('main');
     }

@@ -11,11 +11,14 @@ class mainState extends Phaser.State {
     private acceleracionAngular = 50;
     private maxAcceleracionAngular = 100;
     private walls:Phaser.Group;
+    private BOUNCE:number = 0.4;
+    private ANGULAR_DRAG:number = this.DRAG * 1.3;
+    private pickup:Phaser.Sprite;
 
     preload():void {
         super.preload();
         this.load.image('ufo', 'assets/UFO_small.png');
-        this.load.image('pickup', 'assets/Pickup.png');
+        this.load.image('pickup', 'assets/Pickup_small.png');
         this.load.image('background', 'assets/Background.png');
         this.load.image('center', 'assets/center.png');
         this.load.image('up', 'assets/up.png');
@@ -29,6 +32,7 @@ class mainState extends Phaser.State {
         super.create();
         this.createWalls();
         this.createPlayer();
+        this.createPickupObjects();
         this.cursor = this.input.keyboard.createCursorKeys();
     }
 
@@ -49,15 +53,22 @@ class mainState extends Phaser.State {
         this.physics.enable(this.ufo, Physics.ARCADE);
         this.ufo.body.maxVelocity.setTo(this.MAX_SPEED, this.MAX_SPEED); //coordenadas X, Y
         this.ufo.body.collideWorldBounds = true;
-        this.ufo.body.bounce.set(0.8); //Valor entre 0.0 y 1.0
+        this.ufo.body.bounce.set(this.BOUNCE); //Valor entre 0.0 y 1.0
         this.ufo.body.drag.setTo(this.DRAG, this.DRAG); //x,y
-        this.ufo.body.angularDrag = this.maxAcceleracionAngular;
+        //this.ufo.body.angularDrag = this.maxAcceleracionAngular;
+        this.ufo.body.angularDrag = this.ANGULAR_DRAG;
     };
+
+    private createPickupObjects():void{
+        this.pickup = this.add.sprite(this.world.centerX, this.world.centerY, 'pickup');
+        this.pickup.anchor.setTo(0.5, 0.5);
+    }
 
     update():void {
         super.update();
         this.game.debug.bodyInfo(this.ufo, 0, 0);
         this.moverUFO();
+        this.pickup.angle += 1;
         this.physics.arcade.collide(this.ufo, this.walls);
     }
 
@@ -88,6 +99,7 @@ class SimpleGame {
     game:Phaser.Game;
     constructor() {
         this.game = new Phaser.Game(600, 600, Phaser.AUTO, 'gameDiv');
+        Phaser.Plugin.VirtualJoystick
         this.game.state.add('main', mainState);
         this.game.state.start('main');
     }
