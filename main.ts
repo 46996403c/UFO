@@ -65,10 +65,13 @@ class mainState extends Phaser.State {
 
     private createPickupObjects():void{
         var positions:Point[]=[
-            new Point(300, 125), new Point(300, 475),
-            new Point(125, 300), new Point(475, 300),
-            new Point(175, 175), new Point(425, 175),
-            new Point(175, 425), new Point(425, 425),
+            new Point(300, 95),
+            new Point(190, 135), new Point(410, 135),
+            new Point(120, 200), new Point(480, 200),
+            new Point(95, 300), new Point(505, 300),
+            new Point(120, 405), new Point(480, 405),
+            new Point(190, 465), new Point(410, 465),
+            new Point(300, 505),
         ];
         for (var i=0;i<positions.length;i++){
             var position = positions[i];
