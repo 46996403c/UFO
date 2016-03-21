@@ -79,7 +79,9 @@ var mainState = (function (_super) {
     mainState.prototype.createPickupObjects = function () {
         this.pickups = this.add.group();
         this.pickups.enableBody = true;
-        var positions = [
+        this.map.createFromObjects('pickups', 101, 'pickup', 0, true, false, this.pickups);
+        /*
+        var positions:Point[]=[
             new Point(300, 95),
             new Point(190, 135), new Point(410, 135),
             new Point(120, 200), new Point(480, 200),
@@ -88,14 +90,15 @@ var mainState = (function (_super) {
             new Point(190, 465), new Point(410, 465),
             new Point(300, 505),
         ];
-        for (var i = 0; i < positions.length; i++) {
+        for (var i=0;i<positions.length;i++){
             var position = positions[i];
-            var pickup = new Pickup(this.game, position.x, position.y, 'pickup');
+            var pickup = new Pickup (this.game, position.x, position.y, 'pickup');
             this.add.existing(pickup);
             pickup.scale.setTo(0, 0);
-            this.add.tween(pickup.scale).to({ x: 1, y: 1 }, 300).start();
+            this.add.tween(pickup.scale).to({x:1, y:1}, 300).start();
             this.pickups.add(pickup);
         }
+        */
     };
     mainState.prototype.update = function () {
         _super.prototype.update.call(this);

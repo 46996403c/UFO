@@ -81,6 +81,8 @@ class mainState extends Phaser.State {
     private createPickupObjects():void{
         this.pickups = this.add.group();
         this.pickups.enableBody = true;
+        this.map.createFromObjects('pickups', 101, 'pickup', 0, true, false, this.pickups);
+        /*
         var positions:Point[]=[
             new Point(300, 95),
             new Point(190, 135), new Point(410, 135),
@@ -98,6 +100,7 @@ class mainState extends Phaser.State {
             this.add.tween(pickup.scale).to({x:1, y:1}, 300).start();
             this.pickups.add(pickup);
         }
+        */
     }
 
     update():void {

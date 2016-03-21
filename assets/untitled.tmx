@@ -3,6 +3,9 @@
  <tileset firstgid="1" name="Background_small" tilewidth="60" tileheight="60">
   <image source="Background_small.png" width="603" height="600"/>
  </tileset>
+ <tileset firstgid="101" name="Pickup_small" tilewidth="50" tileheight="51">
+  <image source="Pickup_small.png" width="50" height="51"/>
+ </tileset>
  <layer name="walls" width="10" height="10">
   <data encoding="csv">
 1,2,3,4,5,6,7,8,9,10,
@@ -31,4 +34,25 @@
 0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
+ <objectgroup name="pickups">
+  <object gid="101" x="284" y="128"/>
+  <object gid="101" x="184" y="156"/>
+  <object gid="101" x="141" y="189"/>
+  <object gid="101" x="96" y="239"/>
+  <object gid="101" x="79" y="312"/>
+  <object gid="101" x="83" y="395"/>
+  <object gid="101" x="139" y="462"/>
+  <object gid="101" x="210" y="495"/>
+  <object gid="101" x="273" y="524"/>
+  <object gid="101" x="349" y="519"/>
+  <object gid="101" x="405" y="475"/>
+  <object gid="101" x="450" y="433"/>
+  <object gid="101" x="470" y="359"/>
+  <object gid="101" x="471" y="291"/>
+  <object gid="101" x="459" y="229"/>
+  <object gid="101" x="417" y="187"/>
+  <object gid="101" x="379" y="153"/>
+  <object gid="101" x="338" y="133"/>
+  <object gid="101" x="236" y="133"/>
+ </objectgroup>
 </map>
